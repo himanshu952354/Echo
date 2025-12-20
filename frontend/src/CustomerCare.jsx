@@ -30,7 +30,7 @@ const CustomerCare = () => {
   };
 
   return (
-    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-8 pb-24 lg:pb-8">
+    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-8 pb-24 lg:pb-8 max-w-full overflow-x-hidden">
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
       <div className="max-w-6xl mx-auto">
         {/* Header */}

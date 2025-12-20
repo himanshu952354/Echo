@@ -35,7 +35,7 @@ const Customer = ({ user }) => {
   };
 
   return (
-    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-4 pb-24 lg:pb-4">
+    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-4 pb-24 lg:pb-4 max-w-full overflow-x-hidden">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-900">Analysis History</h1>
         <p className="text-sm text-gray-600 mt-1">A log of all sentiment analysis performed on calls.</p>
