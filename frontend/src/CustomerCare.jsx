@@ -21,7 +21,7 @@ const CustomerCare = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/support', formData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/support`, formData);
       toast.success(response.data.msg);
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
@@ -45,69 +45,69 @@ const CustomerCare = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-16">
-            <div className="w-full md:w-1/2">
-                {/* Form Card */}
-                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-200 h-full" data-aos="fade-up">
-                <form onSubmit={handleSubmit}>
-                    <div className="space-y-4">
-                    {/* Name */}
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                        <input
-                        type="text"
-                        id="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
-                        placeholder="Enter your name"
-                        required
-                        />
-                    </div>
+          <div className="w-full md:w-1/2">
+            {/* Form Card */}
+            <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-200 h-full" data-aos="fade-up">
+              <form onSubmit={handleSubmit}>
+                <div className="space-y-4">
+                  {/* Name */}
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Enter your name"
+                      required
+                    />
+                  </div>
 
-                    {/* Email */}
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                        <input
-                        type="email"
-                        id="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
-                        placeholder="Enter your email"
-                        required
-                        />
-                    </div>
+                  {/* Email */}
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
 
-                    {/* Message */}
-                    <div>
-                        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                        <textarea
-                        id="message"
-                        rows="5"
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
-                        placeholder="Your message"
-                        required
-                        ></textarea>
-                    </div>
+                  {/* Message */}
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                    <textarea
+                      id="message"
+                      rows="5"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Your message"
+                      required
+                    ></textarea>
+                  </div>
 
-                    {/* Submit Button */}
-                    <div className="text-right">
-                        <button
-                        type="submit"
-                        className="px-6 py-2 bg-purple-700 text-white font-semibold !rounded-lg hover:bg-purple-800 transition-colors"
-                        >
-                        Submit
-                        </button>
-                    </div>
-                    </div>
-                </form>
+                  {/* Submit Button */}
+                  <div className="text-right">
+                    <button
+                      type="submit"
+                      className="px-6 py-2 bg-purple-700 text-white font-semibold !rounded-lg hover:bg-purple-800 transition-colors"
+                    >
+                      Submit
+                    </button>
+                  </div>
                 </div>
+              </form>
             </div>
-            <div className="w-full md:w-1/2 flex items-center justify-center">
-                <Lottie animationData={animationData} loop={true} />
-            </div>
+          </div>
+          <div className="w-full md:w-1/2 flex items-center justify-center">
+            <Lottie animationData={animationData} loop={true} />
+          </div>
         </div>
       </div>
     </main>

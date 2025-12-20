@@ -32,7 +32,7 @@ const Settings = ({ user }) => {
       return;
     }
     try {
-      const response = await axios.put(`http://localhost:5000/user/${user._id}`, userData);
+      const response = await axios.put(`${import.meta.env.VITE_API_URL}/user/${user._id}`, userData);
       toast.success('Profile updated successfully!');
       localStorage.setItem('user', JSON.stringify({ ...user, ...userData }));
     } catch (error) {

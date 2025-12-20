@@ -59,8 +59,8 @@ const Login = ({ onAuthSuccess, setActivePage }) => {
     try {
       setLoading(true);
       const url = isLogin
-        ? "http://localhost:5000/login"
-        : "http://localhost:5000/signup";
+        ? `${import.meta.env.VITE_API_URL}/login`
+        : `${import.meta.env.VITE_API_URL}/signup`;
 
       const payload = isLogin
         ? { email: formData.email, password: formData.password }
@@ -87,7 +87,7 @@ const Login = ({ onAuthSuccess, setActivePage }) => {
     }
 
     try {
-      await axios.post("http://localhost:5000/forgot-password", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/forgot-password`, {
         email: formData.email,
       });
       setForgotStatus("Password reset link sent to your email.");

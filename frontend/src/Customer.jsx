@@ -9,7 +9,7 @@ const Customer = ({ user }) => {
     const fetchHistory = async () => {
       if (!user) return;
       try {
-        const res = await axios.get(`http://localhost:5000/history?userId=${user._id}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/history?userId=${user._id}`);
         setHistory(res.data);
       } catch (error) {
         console.error("Failed to fetch history", error);
@@ -20,13 +20,13 @@ const Customer = ({ user }) => {
 
   const getSentimentCounts = (item) => {
     if (!item) return { positive: 0, negative: 0, neutral: 0 };
-    
+
     const positiveCount = item.positiveKeywords?.length || 0;
     const negativeCount = item.negativeKeywords?.length || 0;
-    const neutralCount = Math.max(0, 
+    const neutralCount = Math.max(0,
       (item.transcript?.split(' ').length || 0) - positiveCount - negativeCount
     );
-    
+
     return {
       positive: positiveCount,
       negative: negativeCount,

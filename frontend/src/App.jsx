@@ -68,7 +68,7 @@ export default function App() {
       if (!user || !user._id) return;
       try {
         const response = await fetch(
-          `http://localhost:5000/stats?userId=${user._id}`
+          `${import.meta.env.VITE_API_URL}/stats?userId=${user._id}`
         );
         if (response.ok) {
           const data = await response.json();

@@ -72,14 +72,14 @@ export default function SentimentDashboard({
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/process-call", form);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/process-call`, form);
       const analysisResult = res.data.data;
 
       const positiveCount = analysisResult.positiveKeywords?.length || 0;
       const negativeCount = analysisResult.negativeKeywords?.length || 0;
-      
+
       const totalWords = analysisResult.transcript ? analysisResult.transcript.split(' ').filter(w => w.length > 0).length : 0;
-      
+
       const neutralCount = Math.max(0, totalWords - (positiveCount + negativeCount));
 
       const sentimentData = {
@@ -209,10 +209,10 @@ export default function SentimentDashboard({
                   </div>
                 </div>
               </>
-              
+
             ) : (
               <>
-              
+
                 <div className="grid grid-cols-3 gap-4">
                   <StatCardPlaceholder title="Positive" Icon={ChevronUp} />
                   <StatCardPlaceholder title="Negative" Icon={ChevronDown} />
@@ -233,9 +233,9 @@ export default function SentimentDashboard({
                   </div>
                 </div>
               </>
-              
-            )}    
-            </div>
+
+            )}
+          </div>
         </div>
       </div>
     </main>

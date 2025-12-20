@@ -16,97 +16,60 @@ dotenv.config();
 connectDB();
 
 const app = express();
-
-/* -------------------- MIDDLEWARE -------------------- */
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT"],
-}));
+app.use(cors());
 app.use(express.json());
-
-/* -------------------- HEALTH CHECK -------------------- */
-app.get("/", (req, res) => {
-  res.send("Echo backend is running 🚀");
-});
-
-/* -------------------- MULTER SETUP -------------------- */
-// Ensure uploads directory exists (IMPORTANT for Render)
-if (!fs.existsSync("uploads")) {
-  fs.mkdirSync("uploads");
-}
 
 const upload = multer({ dest: "uploads/" });
 const sentiment = new Sentiment();
 
-/* -------------------- SIGNUP -------------------- */
+/* ---------- SIGNUP ---------- */
 app.post("/signup", async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
     const exists = await User.findOne({ email });
-    if (exists) {
-      return res.status(400).json({ msg: "User already exists" });
-    }
+    if (exists) return res.status(400).json({ msg: "User already exists" });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashed = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       username,
       email,
-      password: hashedPassword,
+      password: hashed,
     });
 
-    res.json({
-      user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-      },
-    });
+    res.json({ user: { _id: user._id, username: user.username, email: user.email } });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ msg: "Signup failed" });
   }
 });
 
-/* -------------------- LOGIN -------------------- */
+/* ---------- LOGIN ---------- */
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ msg: "User not found" });
-    }
+    if (!user) return res.status(400).json({ msg: "User not found" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: "Wrong password" });
-    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(400).json({ msg: "Wrong password" });
 
-    res.json({
-      user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-      },
-    });
+    res.json({ user: { _id: user._id, username: user.username, email: user.email } });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ msg: "Login failed" });
   }
 });
 
-/* -------------------- PROCESS CALL -------------------- */
+/* ---------- PROCESS CALL ---------- */
 app.post("/process-call", upload.single("audio"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ msg: "No audio uploaded" });
     }
-
     const { callerName, userId } = req.body;
+
     if (!userId) {
-      fs.unlinkSync(req.file.path);
       return res.status(400).json({ msg: "User ID is required" });
     }
 
@@ -125,18 +88,26 @@ app.post("/process-call", upload.single("audio"), async (req, res) => {
     const transcript =
       response?.result?.results?.channels?.[0]?.alternatives?.[0]?.transcript || "";
 
+    // Perform sentiment analysis
     const sentimentResult = sentiment.analyze(transcript);
 
-    const newAnalysis = await Analysis.create({
+    // Extract positive and negative keywords
+    const positiveKeywords = sentimentResult.positive.slice(0, 5);
+    const negativeKeywords = sentimentResult.negative.slice(0, 5);
+
+    // Save the analysis to the database
+    const newAnalysis = new Analysis({
       callerName: callerName || "Unknown",
-      transcript,
+      transcript: transcript,
       sentimentScore: sentimentResult.score,
-      positiveKeywords: sentimentResult.positive.slice(0, 5),
-      negativeKeywords: sentimentResult.negative.slice(0, 5),
+      positiveKeywords: positiveKeywords,
+      negativeKeywords: negativeKeywords,
       date: new Date(),
       user: userId,
     });
+    await newAnalysis.save();
 
+    // Clean up the uploaded file
     fs.unlinkSync(req.file.path);
 
     res.json({
@@ -144,20 +115,21 @@ app.post("/process-call", upload.single("audio"), async (req, res) => {
       data: newAnalysis,
     });
   } catch (error) {
-    console.error("Process call error:", error);
-    if (req.file) fs.unlinkSync(req.file.path);
+    console.error("Error processing call:", error);
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     res.status(500).json({ msg: "Error processing call" });
   }
 });
 
-/* -------------------- FETCH HISTORY -------------------- */
+/* ---------- FETCH HISTORY ---------- */
 app.get("/history", async (req, res) => {
   try {
     const { userId } = req.query;
     if (!userId) {
       return res.status(400).json({ msg: "User ID is required" });
     }
-
     const history = await Analysis.find({ user: userId }).sort({ date: -1 });
     res.json(history);
   } catch (error) {
@@ -165,14 +137,13 @@ app.get("/history", async (req, res) => {
   }
 });
 
-/* -------------------- STATS -------------------- */
+/* ---------- GET STATS ---------- */
 app.get("/stats", async (req, res) => {
   try {
     const { userId } = req.query;
     if (!userId) {
       return res.status(400).json({ msg: "User ID is required" });
     }
-
     const answeredCalls = await Analysis.countDocuments({ user: userId });
     res.json({ answeredCalls });
   } catch (error) {
@@ -180,7 +151,7 @@ app.get("/stats", async (req, res) => {
   }
 });
 
-/* -------------------- UPDATE USER -------------------- */
+/* ---------- UPDATE USER ---------- */
 app.put("/user/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -191,53 +162,50 @@ app.put("/user/:id", async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    if (username) user.username = username;
-    if (email) user.email = email;
+    if (username) {
+      user.username = username;
+    }
+    if (email) {
+      user.email = email;
+    }
 
     await user.save();
 
-    res.json({
-      user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-      },
-    });
+    res.json({ user: { _id: user._id, username: user.username, email: user.email } });
   } catch (error) {
     res.status(500).json({ msg: "Failed to update user" });
   }
 });
 
-/* -------------------- SUPPORT EMAIL -------------------- */
+/* ---------- SUPPORT EMAIL ---------- */
 app.post("/support", async (req, res) => {
   try {
     const { name, email, message } = req.body;
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
 
-    await transporter.sendMail({
+    const mailOptions = {
       from: email,
       to: process.env.EMAIL_USER,
       subject: `Support Query from ${name}`,
       text: message,
-    });
+    };
 
-    res.json({ success: true, msg: "Message sent successfully" });
+    await transporter.sendMail(mailOptions);
+
+    res.json({ success: true, msg: "Your message has been sent successfully!" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: "Failed to send message" });
+    console.error("Error sending email:", error);
+    res.status(500).json({ msg: "Failed to send your message." });
   }
 });
 
-/* -------------------- START SERVER -------------------- */
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`🚀 Echo backend running on port ${PORT}`);
+app.listen(5000, () => {
+  console.log("Backend running on 5000");
 });
