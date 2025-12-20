@@ -20,6 +20,8 @@
 /* Prevent content from hiding behind fixed navbar */
 body {
   padding-top: var(--header-height);
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* FIXED: Navbar button styles with proper physics */
@@ -61,8 +63,8 @@ body {
   border-radius: 50%;
   background-color: rgb(118, 33, 222);
   transform: translate(-50%, -50%);
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-              height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
 }
 
@@ -158,13 +160,16 @@ body {
   from {
     transform: translateZ(10px) rotateX(18deg) rotateY(8deg) rotate(0deg) scale(1.08);
   }
+
   to {
     transform: translateZ(10px) rotateX(18deg) rotateY(8deg) rotate(360deg) scale(1.08);
   }
 }
 
 /* small spacing helper for Bootstrap utility compatibility */
-.me-2 { margin-right: 0.5rem; }
+.me-2 {
+  margin-right: 0.5rem;
+}
 
 /* main content area sits to the right of the left navbar */
 .main-content {
@@ -183,6 +188,7 @@ body {
   flex-direction: column;
   gap: 18px;
 }
+
 .right-badges .badge {
   width: 72px;
   height: 72px;
@@ -194,10 +200,24 @@ body {
   color: white;
   font-weight: 700;
 }
-.right-badges .primary { background: #3b82f6; }
-.right-badges .secondary { background: #f97316; }
-.right-badges .muted { background: #9ca3af; }
-.right-badges .badge span { font-weight: 500; color: rgba(255,255,255,0.9); font-size: 11px }
+
+.right-badges .primary {
+  background: #3b82f6;
+}
+
+.right-badges .secondary {
+  background: #f97316;
+}
+
+.right-badges .muted {
+  background: #9ca3af;
+}
+
+.right-badges .badge span {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 11px
+}
 
 /* Adjust for fixed navbar */
 .pt-header {
@@ -212,21 +232,27 @@ body {
 /* Responsive adjustments for mobile devices */
 @media (max-width: 768px) {
   body {
-    padding-top: var(--header-height); /* Ensure content isn't hidden by navbar */
-    padding-bottom: 64px; /* Add padding for the bottom navbar */
+    padding-top: var(--header-height);
+    /* Ensure content isn't hidden by navbar */
+    padding-bottom: 64px;
+    /* Add padding for the bottom navbar */
   }
 
   .main-content {
-    margin-left: 0; /* Remove the left margin to use full width */
-    padding: 16px; /* Reduce padding for smaller screens */
+    margin-left: 0;
+    /* Remove the left margin to use full width */
+    padding: 16px;
+    /* Reduce padding for smaller screens */
   }
 
   .navbar {
-    padding: 0 16px; /* Add some padding to the navbar on mobile */
+    padding: 0 16px;
+    /* Add some padding to the navbar on mobile */
   }
 
   .right-badges {
-    display: none; /* Hide the floating badges on small screens */
+    display: none;
+    /* Hide the floating badges on small screens */
   }
 
   /* Hide the desktop sidebar on mobile */
@@ -256,6 +282,7 @@ body {
     display: none;
   }
 }
+
 .button {
   cursor: pointer;
   position: relative;
