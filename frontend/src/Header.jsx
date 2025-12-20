@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Lottie from "lottie-react";
 import animationData from "./assets/Microphone record.json";
-import { FaUserCircle, FaUser, FaBell } from 'react-icons/fa';
+import { FaUserCircle, FaUser, FaBell, FaSignOutAlt } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
@@ -85,7 +85,7 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
                   <FaUserCircle size={22} />
                 </div>
               </div>
-              
+
               <AnimatePresence>
                 {dropdownOpen && (
                   <motion.div
@@ -110,8 +110,9 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
                 )}
               </AnimatePresence>
             </div>
-            <button className="button" onClick={onLogout}>
-              <p className="m-0">Logout</p>
+            <button className="button d-flex align-items-center justify-content-center" onClick={onLogout} style={{ minWidth: "auto", padding: "8px 16px" }}>
+              <FaSignOutAlt className="d-block d-md-none" />
+              <p className="m-0 d-none d-md-block">Logout</p>
             </button>
           </div>
         ) : (
