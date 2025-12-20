@@ -37,15 +37,15 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
     <Navbar expand="lg" fixed="top" className="bg-white border-b border-gray-200 shadow-sm" style={{ height: '64px' }}>
       <Container fluid className="d-flex justify-content-between align-items-center px-3">
         <Navbar.Brand
-          className="fs-4 d-flex align-items-center cursor-pointer"
+          className="fs-4 d-flex align-items-center gap-2 cursor-pointer"
           onClick={() => window.location.reload()}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', padding: 0 }}
         >
           <Lottie
             animationData={animationData}
-            style={{ width: 70, height: 70 }}
+            style={{ width: 50, height: 50 }}
           />
-          <span className="font-semibold">Echo</span>
+          <span className="font-semibold text-lg">Echo</span>
         </Navbar.Brand>
 
         {isAuthenticated ? (
@@ -79,7 +79,11 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
               </AnimatePresence>
             </div>
             <div className="relative" ref={dropdownRef}>
-              <div className="button" onClick={() => setDropdownOpen(!dropdownOpen)}>
+              <div
+                className="button d-flex align-items-center justify-content-center"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                style={{ minWidth: "auto", padding: "8px 16px" }}
+              >
                 <div className="d-flex align-items-center gap-2">
                   <span className="d-none d-md-block">{user?.username || "User"}</span>
                   <FaUserCircle size={22} />
