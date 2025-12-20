@@ -42,7 +42,7 @@ const Settings = ({ user }) => {
   };
 
   return (
-    <main className="bg-gray-50 min-h-screen p-8">
+    <main className="lg:ml-20 ml-0 bg-gray-50 min-h-screen p-8 pb-24 lg:pb-8">
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">

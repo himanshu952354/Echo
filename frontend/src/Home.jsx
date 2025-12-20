@@ -76,9 +76,8 @@ const CompactStatCard = ({ title, value, change, icon: Icon, color }) => (
     </div>
 
     <div
-      className={`flex items-center text-xs ${
-        change >= 0 ? "text-emerald-600" : "text-red-600"
-      }`}
+      className={`flex items-center text-xs ${change >= 0 ? "text-emerald-600" : "text-red-600"
+        }`}
     >
       {change >= 0 ? (
         <ChevronUp className="w-3 h-3 mr-1" />
@@ -273,7 +272,7 @@ const Home = ({ answeredCalls = 405, abandonedCalls = 22 }) => {
   const incomingCalls = answeredCalls + abandonedCalls;
 
   return (
-    <div className="ml-20 bg-gray-50 min-h-screen p-6">
+    <div className="lg:ml-20 ml-0 bg-gray-50 min-h-screen p-6 pb-24 lg:pb-6">
       <h1 className="text-2xl font-bold mb-6">Performance Dashboard</h1>
 
       {/* STATS */}
