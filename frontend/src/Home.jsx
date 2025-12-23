@@ -272,47 +272,49 @@ const Home = ({ answeredCalls = 405, abandonedCalls = 22 }) => {
   const incomingCalls = answeredCalls + abandonedCalls;
 
   return (
-    <div className="lg:ml-20 ml-0 bg-gray-50 min-h-screen p-4 lg:p-6 pb-24 lg:pb-6 max-w-full overflow-x-hidden">
-      <h1 className="text-2xl font-bold mb-6">Performance Dashboard</h1>
+    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-4 pb-24 lg:pb-4 max-w-full overflow-x-hidden">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-2xl font-bold mb-6">Performance Dashboard</h1>
 
-      {/* STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6 mt-4">
-        <CompactStatCard
-          title="Incoming Calls"
-          value={incomingCalls}
-          change={15.3}
-          icon={Phone}
-          color="bg-indigo-500"
-        />
-        <CompactStatCard
-          title="Answered Calls"
-          value={answeredCalls}
-          change={12.1}
-          icon={CheckCircle}
-          color="bg-emerald-500"
-        />
-        <CompactStatCard
-          title="Abandoned Calls"
-          value={abandonedCalls}
-          change={-5.2}
-          icon={PhoneOff}
-          color="bg-red-500"
-        />
-        <ServiceLevelCard answered={answeredCalls} total={incomingCalls} />
-      </div>
+        {/* STATS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6 mt-4">
+          <CompactStatCard
+            title="Incoming Calls"
+            value={incomingCalls}
+            change={15.3}
+            icon={Phone}
+            color="bg-indigo-500"
+          />
+          <CompactStatCard
+            title="Answered Calls"
+            value={answeredCalls}
+            change={12.1}
+            icon={CheckCircle}
+            color="bg-emerald-500"
+          />
+          <CompactStatCard
+            title="Abandoned Calls"
+            value={abandonedCalls}
+            change={-5.2}
+            icon={PhoneOff}
+            color="bg-red-500"
+          />
+          <ServiceLevelCard answered={answeredCalls} total={incomingCalls} />
+        </div>
 
-      {/* CHARTS */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <CallVolumeChart data={initialCallData} />
-        <SentimentCard data={initialSentimentData} />
-      </div>
+        {/* CHARTS */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <CallVolumeChart data={initialCallData} />
+          <SentimentCard data={initialSentimentData} />
+        </div>
 
-      {/* BOTTOM */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <AdditionalStats />
-        <TopPerformers />
+        {/* BOTTOM */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <AdditionalStats />
+          <TopPerformers />
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
