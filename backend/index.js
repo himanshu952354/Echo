@@ -22,6 +22,7 @@ app.use(express.json());
 const upload = multer({ dest: "uploads/" });
 const sentiment = new Sentiment();
 
+
 /* ---------- SIGNUP ---------- */
 app.post("/signup", async (req, res) => {
   try {
@@ -145,9 +146,29 @@ app.get("/stats", async (req, res) => {
       return res.status(400).json({ msg: "User ID is required" });
     }
     const answeredCalls = await Analysis.countDocuments({ user: userId });
-    res.json({ answeredCalls });
+    const user = await User.findById(userId);
+    const abandonedCalls = user ? (user.abandonedCalls || 0) : 0;
+    res.json({ answeredCalls, abandonedCalls });
   } catch (error) {
     res.status(500).json({ msg: "Failed to fetch stats" });
+  }
+});
+
+/* ---------- LOG ABANDONED CALL ---------- */
+app.post("/log-abandoned", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) return res.status(400).json({ msg: "User ID is required" });
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    user.abandonedCalls = (user.abandonedCalls || 0) + 1;
+    await user.save();
+
+    res.json({ success: true, abandonedCalls: user.abandonedCalls });
+  } catch (error) {
+    res.status(500).json({ msg: "Failed to log abandoned call" });
   }
 });
 

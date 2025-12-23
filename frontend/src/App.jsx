@@ -73,6 +73,7 @@ export default function App() {
         if (response.ok) {
           const data = await response.json();
           setAnsweredCalls(data.answeredCalls);
+          setAbandonedCalls(data.abandonedCalls);
         }
       } catch (error) {
         console.error("Failed to fetch initial stats:", error);
@@ -114,7 +115,17 @@ export default function App() {
       setCallerNameInput("");
       setAudioFile(null);
     } else {
+      // Optimistically update UI
       setAbandonedCalls((prev) => prev + 1);
+
+      // Log to backend
+      if (user && user._id) {
+        fetch(`${import.meta.env.VITE_API_URL}/log-abandoned`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id }),
+        }).catch(err => console.error("Failed to log abandoned call", err));
+      }
     }
   };
 
