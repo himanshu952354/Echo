@@ -203,6 +203,12 @@ app.post("/support", async (req, res) => {
   try {
     const { name, email, message } = req.body;
 
+
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.error("Missing EMAIL_USER or EMAIL_PASS environment variables");
+      return res.status(500).json({ msg: "Server configuration error (Missing Email Credentials)" });
+    }
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
