@@ -223,7 +223,11 @@ app.post("/support", async (req, res) => {
     res.json({ success: true, msg: "Your message has been sent successfully!" });
   } catch (error) {
     console.error("Error sending email:", error);
-    res.status(500).json({ msg: "Failed to send your message." });
+    // Detailed error for debugging
+    if (error.response) {
+      console.error("SMTP Response:", error.response);
+    }
+    res.status(500).json({ msg: "Failed to send your message. Check server logs." });
   }
 });
 
