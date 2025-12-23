@@ -106,7 +106,7 @@ export default function SentimentDashboard({
   ] : [];
 
   return (
-    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-4 pb-24 lg:pb-4 max-w-full overflow-x-hidden">
+    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-4 pb-24 lg:pb-4 max-w-full">
       <div className="max-w-7xl mx-auto">
         <div className="mb-4">
           <h1 className="text-xl font-bold text-gray-900">Sentiment Analysis</h1>

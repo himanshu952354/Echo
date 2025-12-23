@@ -272,7 +272,7 @@ const Home = ({ answeredCalls = 405, abandonedCalls = 22 }) => {
   const incomingCalls = answeredCalls + abandonedCalls;
 
   return (
-    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-4 pb-24 lg:pb-4 max-w-full overflow-x-hidden">
+    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-4 pb-24 lg:pb-4 max-w-full">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold mb-6">Performance Dashboard</h1>
 
