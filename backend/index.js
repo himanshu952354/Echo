@@ -23,10 +23,20 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+
+// Ensure uploads directory exists
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 app.use("/uploads", express.static("uploads"));
 
 const upload = multer({ dest: "uploads/" });
 const sentiment = new Sentiment();
+
+// Health Check
+app.get("/", (req, res) => {
+  res.send("Echo API is running");
+});
 
 /* ---------- SIGNUP ---------- */
 app.post("/signup", async (req, res) => {
@@ -367,6 +377,8 @@ app.post("/support", async (req, res) => {
       console.error("Missing EMAIL_USER or EMAIL_PASS environment variables");
       return res.status(500).json({ msg: "Server configuration error (Missing Email Credentials)" });
     }
+
+    console.log(`Attempting to send email from: ${process.env.EMAIL_USER}`);
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
