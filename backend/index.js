@@ -382,8 +382,8 @@ app.post("/support", async (req, res) => {
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
+      port: 465,
+      secure: true, // Use SSL
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -391,8 +391,9 @@ app.post("/support", async (req, res) => {
       tls: {
         rejectUnauthorized: false
       },
-      // Force IPv4 to avoid timeouts on some cloud providers
-      family: 4
+      // Force IPv4 and set timeout to avoid hang-ups
+      family: 4,
+      connectionTimeout: 10000
     });
 
     const mailOptions = {
