@@ -35,13 +35,13 @@ const Customer = ({ user }) => {
   };
 
   return (
-    <main className="lg:ml-20 ml-0 min-h-screen bg-gray-50 p-4 pb-24 lg:pb-4 max-w-full overflow-x-hidden">
+    <main className="lg:ml-20 ml-0 min-h-[calc(100vh-64px)] bg-gray-50 p-4 pb-24 lg:pb-4">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-900">Analysis History</h1>
         <p className="text-sm text-gray-600 mt-1">A log of all sentiment analysis performed on calls.</p>
       </div>
       <div className="max-w-7xl mx-auto">
-        <div className="mt-4 bg-white mp-4 !rounded-xl shadow-sm border border-gray-200 shadow-md hover:shadow-xl transition-shadow" data-aos="fade-up">
+        <div className="mt-4 bg-white p-4 !rounded-xl shadow-sm border border-gray-200 shadow-md hover:shadow-xl transition-shadow" data-aos="fade-up">
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left text-gray-600">
               <thead className="text-xs text-gray-700 uppercase bg-gray-100">

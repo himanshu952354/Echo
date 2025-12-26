@@ -18,10 +18,15 @@
 }
 
 /* Prevent content from hiding behind fixed navbar */
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   padding-top: var(--header-height);
   overflow-x: hidden;
-  width: 100%;
+  background-color: #f9fafb;
+  min-height: 100vh;
 }
 
 /* FIXED: Navbar button styles with proper physics */

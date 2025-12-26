@@ -33,11 +33,21 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
     };
   }, [dropdownRef, notificationDropdownRef]);
 
+  const isLogin = activePage === 'login';
+
   return (
-    <Navbar expand="lg" fixed="top" className="bg-white border-b border-gray-200 shadow-sm" style={{ height: '64px' }}>
+    <Navbar
+      expand="lg"
+      fixed="top"
+      className={`transition-all duration-300 backdrop-blur-md z-50 ${isLogin
+        ? 'bg-white/10 border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
+        : 'bg-white/70 border-gray-200/50 shadow-sm supports-[backdrop-filter]:bg-white/50'
+        }`}
+      style={{ height: '64px' }}
+    >
       <Container fluid className="d-flex justify-content-between align-items-center px-3">
         <Navbar.Brand
-          className="fs-4 d-flex align-items-center gap-2 cursor-pointer"
+          className="fs-4 d-flex align-items-center gap-0 cursor-pointer"
           onClick={() => window.location.reload()}
           style={{ cursor: 'pointer', padding: 0 }}
         >
@@ -45,15 +55,15 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
             animationData={animationData}
             style={{ width: 50, height: 50 }}
           />
-          <span className="font-semibold text-lg">Echo</span>
+          <span className="font-semibold text-lg   text-gray-900">Echo</span>
         </Navbar.Brand>
 
         {isAuthenticated ? (
-          <div className="d-flex align-items-center gap-3">
+          <div className="d-flex align-items-center gap-4">
             <div className="relative" ref={notificationDropdownRef}>
               <FaBell
                 size={22}
-                className="cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+                className="cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 text-gray-600"
                 onClick={() => setNotificationDropdownOpen(!notificationDropdownOpen)}
               />
               <AnimatePresence>
@@ -68,7 +78,7 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
                     <div className="py-1">
                       <a
                         href="#"
-                        className="flex items-center gap-3 px-4 py-2 text-sm text-gray-800 transition-colors duration-150"
+                        className={`flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-150 ${isLogin ? 'text-gray-200 hover:bg-white/10' : 'text-gray-800 hover:bg-gray-100'}`}
                         style={{ textDecoration: 'none' }}
                       >
                         <span>No new notifications</span>
@@ -80,14 +90,19 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
             </div>
             <div className="relative" ref={dropdownRef}>
               <div
-                className="button d-flex align-items-center justify-content-center"
+                className="cursor-pointer d-flex align-items-center justify-content-center hover:opacity-80 transition-opacity"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                style={{ minWidth: "auto", padding: "8px 16px" }}
               >
-                <div className="d-flex align-items-center gap-2">
-                  <span className="d-none d-md-block">{user?.username || "User"}</span>
-                  <FaUserCircle size={22} />
-                </div>
+                {user?.profilePicture ? (
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}${user.profilePicture}`}
+                    alt="Profile"
+                    className="rounded-full border border-gray-300 object-cover shadow-sm"
+                    style={{ width: "40px", height: "40px" }}
+                  />
+                ) : (
+                  <FaUserCircle size={32} className="text-gray-600" />
+                )}
               </div>
 
               <AnimatePresence>
@@ -103,27 +118,32 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
                       <a
                         href="#"
                         onClick={handleProfileClick}
-                        className="flex items-center gap-3 px-4 py-2 text-sm text-gray-800 transition-colors duration-150"
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-gray-800 transition-colors duration-150 hover:bg-gray-100"
                         style={{ textDecoration: 'none' }}
                       >
-                        <FaUser className="w-4 h-4" />
+                        <FaUser className="w-4 h-4 text-gray-500" />
                         <span>Profile</span>
                       </a>
+                      <button
+                        onClick={onLogout}
+                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 transition-colors duration-150 hover:bg-gray-100 text-left border-t border-gray-100"
+                        style={{ textDecoration: 'none', background: 'none', borderLeft: 'none', borderRight: 'none', borderBottom: 'none' }}
+                      >
+                        <FaSignOutAlt className="w-4 h-4" />
+                        <span>Logout</span>
+                      </button>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
-            <button className="button d-flex align-items-center justify-content-center" onClick={onLogout} style={{ minWidth: "auto", padding: "8px 16px" }}>
-              <FaSignOutAlt className="d-block d-md-none" />
-              <p className="m-0 d-none d-md-block">Logout</p>
-            </button>
+
           </div>
         ) : (
           activePage !== 'login' && (
             <div className="d-flex align-items-center gap-3">
               <button
-                className="button"
+                className={`button ${isLogin ? '!bg-white/10 !text-white !border-white/20 hover:!bg-white/20' : ''}`}
                 onClick={() => onNavigate ? onNavigate("login") : null}
               >
                 <p className="m-0">{activePage === 'landing' ? 'Get Started' : 'Login'}</p>
@@ -132,7 +152,7 @@ function Header({ isAuthenticated, activePage, user, onLogout, onNavigate }) {
           )
         )}
       </Container>
-    </Navbar>
+    </Navbar >
   );
 }
 

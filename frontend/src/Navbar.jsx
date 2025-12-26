@@ -1,6 +1,6 @@
 import React from "react";
 import { Home, Phone, User, Headset, Settings } from "lucide-react";
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef, useEffect } from "react";
 
 export default function Navbar({ active = "home", onNavigate = () => { } }) {
   const items = [
@@ -28,7 +28,7 @@ export default function Navbar({ active = "home", onNavigate = () => { } }) {
     <>
       {/* Desktop Sidebar */}
       <div
-        className="desktop-nav fixed left-0 w-20 bg-white/30 backdrop-blur-lg hidden lg:flex flex-col items-center py-6 border-r border-gray-200"
+        className="desktop-nav fixed left-0 w-20 bg-white/30 backdrop-blur-lg hidden lg:flex flex-col items-center py-6 border-r border-gray-200 rounded-r-2xl"
         style={{ top: 'var(--header-height)', height: 'calc(100vh - var(--header-height))' }}
       >
         <div className="relative w-full flex flex-col items-center gap-4">

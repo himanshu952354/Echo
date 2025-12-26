@@ -12,6 +12,7 @@ import CustomerCare from "./CustomerCare";
 export default function App() {
   const [activePage, setActivePage] = useState("landing");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecking, setAuthChecking] = useState(true);
   const [user, setUser] = useState(null);
   const [answeredCalls, setAnsweredCalls] = useState(0);
   const [abandonedCalls, setAbandonedCalls] = useState(0);
@@ -54,6 +55,7 @@ export default function App() {
     } else {
       setActivePage("landing");
     }
+    setAuthChecking(false);
   }, []);
 
   // Save active page to localStorage whenever it changes
@@ -149,7 +151,7 @@ export default function App() {
       case "login":
         return <Login onAuthSuccess={handleAuthSuccess} setActivePage={setActivePage} />;
       case "home":
-        return <Home answeredCalls={answeredCalls} abandonedCalls={abandonedCalls} />;
+        return <Home answeredCalls={answeredCalls} abandonedCalls={abandonedCalls} user={user} />;
       case "call":
         return (
           <SentimentDashboard
@@ -165,7 +167,7 @@ export default function App() {
       case "customer":
         return <Customer user={user} />;
       case "customercare":
-        return <CustomerCare />;
+        return <CustomerCare user={user} />;
       case "settings":
         return <Settings user={user} />;
       default:
@@ -173,9 +175,17 @@ export default function App() {
     }
   };
 
+  if (authChecking) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      </div>
+    );
+  }
+
   return (
     <>
-      {/* HEADER - Always show on all pages with solid background */}
+      {/* HEADER - Always show on all pages */}
       <Header
         isAuthenticated={isAuthenticated}
         activePage={activePage}

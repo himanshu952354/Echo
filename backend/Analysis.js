@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 // ... existing code ...
 const AnalysisSchema = new mongoose.Schema({
   callerName: { type: String, required: true, default: 'Unknown' },
-  transcript: { type: String, required: true },
+  transcript: { type: String, required: false, default: "" },
   sentimentScore: { type: Number, required: true },
   positiveKeywords: { type: [String], default: [] },
   negativeKeywords: { type: [String], default: [] },
